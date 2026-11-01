@@ -1,0 +1,276 @@
+{
+  "sourceCommit": "70abb65186592ca788b29b3db22c3160d629c41f",
+  "peer": {
+    "name": "@earendil-works/pi-ai",
+    "version": "1.4.0"
+  },
+  "buildExtraBody": [
+    {
+      "input": {
+        "name": "default",
+        "model": "claude-sonnet-4-5",
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "output": {
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "thinking": {
+          "type": "disabled"
+        },
+        "context_management": {
+          "edits": []
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "max-tokens",
+        "model": "claude-sonnet-4-5",
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "options": {
+          "maxTokens": 64
+        }
+      },
+      "output": {
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "max_tokens": 64,
+        "thinking": {
+          "type": "disabled"
+        },
+        "context_management": {
+          "edits": []
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "adaptive-high",
+        "model": "claude-sonnet-4-6",
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "options": {
+          "maxTokens": 64,
+          "reasoning": "high"
+        }
+      },
+      "output": {
+        "tools": [
+          {
+            "name": "mcp__pi__lookup",
+            "description": "Lookup",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "max_tokens": 64,
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "high"
+        }
+      }
+    },
+    {
+      "input": {
+        "name": "minimal",
+        "model": "claude-sonnet-4-6",
+        "tools": [],
+        "options": {
+          "reasoning": "minimal"
+        }
+      },
+      "output": {
+        "tools": [],
+        "thinking": {
+          "type": "adaptive"
+        },
+        "output_config": {
+          "effort": "low"
+        }
+      }
+    }
+  ],
+  "prepareFrames": {
+    "input": [
+      {
+        "role": "system",
+        "content": "Application instruction",
+        "timestamp": 0
+      },
+      {
+        "role": "user",
+        "content": "Inspect key",
+        "timestamp": 1
+      },
+      {
+        "role": "assistant",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "Synthetic reasoning",
+            "thinkingSignature": "synthetic-signature"
+          },
+          {
+            "type": "text",
+            "text": "Checking"
+          },
+          {
+            "type": "toolCall",
+            "id": "call_1",
+            "name": "lookup",
+            "arguments": {
+              "key": "A"
+            }
+          }
+        ],
+        "timestamp": 2
+      },
+      {
+        "role": "toolResult",
+        "toolCallId": "call_1",
+        "toolName": "lookup",
+        "content": [
+          {
+            "type": "text",
+            "text": "Value A"
+          }
+        ],
+        "isError": false,
+        "timestamp": 3
+      },
+      {
+        "role": "user",
+        "content": "Summarize",
+        "timestamp": 4
+      }
+    ],
+    "output": [
+      {
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Inspect key"
+            }
+          ]
+        },
+        "shouldQuery": false
+      },
+      {
+        "type": "assistant",
+        "message": {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "Synthetic reasoning",
+              "signature": "synthetic-signature"
+            },
+            {
+              "type": "text",
+              "text": "Checking"
+            },
+            {
+              "type": "tool_use",
+              "id": "call_1",
+              "name": "mcp__pi__lookup",
+              "input": {
+                "key": "A"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "type": "tool_result",
+              "tool_use_id": "call_1",
+              "content": "Value A",
+              "is_error": false
+            },
+            {
+              "type": "text",
+              "text": "Summarize"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
